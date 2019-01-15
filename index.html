@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GitHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+</head>
+<body>
+    <header>
+        <svg height="32" fill="white" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
+             <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+        </svg>
+        <form style="margin-left:5px;">
+            <input type="text" placeholder="Search GitHub">
+        </form>
+        <nav>
+            <ul>
+                <li>Pull Requests</li>
+                <li>Issues</li>
+                <li>Market Place</li>
+                <li>Explore</li>
+            </ul>
+        </nav>
+
+    </header>
+    <main>
+        <aside id="left">
+           <img src="" id="avatar" height="225" width="225" > 
+           <script src="script.js"></script>
+
+           <h3 id="name"></h3>
+           <p class="text" id="uname"></p>
+           <p class="text" id="bio" style="margin-top:1em;"></p>
+           <button class="btn-bio"> Edit Bio </button>
+           <div class="left-pannel">
+           <p id="company"></p>
+           <p id="location"></p>
+           <p style="color:blue;">surpreetsing.247@gmail.com</p>
+        </div>
+        </aside>
+        <section id="right">
+           <nav>
+               <ul class="repo-nav">
+                   <li>Overview</li>
+                   <li>Repositories</li>
+                   <li>Stars</li>
+                   <li>Followers</li>
+                   <li>Following</li>
+               </ul>
+           </nav>
+           <hr>
+           <div class="div-search">
+                <form style="padding: 15px; width: 20em;">
+                    <input class="search" type="text" placeholder="Search repositories" onkeyup="filterSearch(this.value)">
+                </form>
+                <div class="btn-cont">
+                    <div class="dropdown">
+                        <button onclick="dropdownClicked()" class="dropbtn">Type: </button>
+                            <div id="myDropdown" class="dropdown-content">
+                                <a href="#" onclick="filterType('');">All</a>
+                                <a href="#" onclick="filterType('public');">Public</a>
+                                <a href="#" onclick="filterType('private');">Private</a>
+                                <a href="#" onclick="filterType('sources');">Sources</a>
+                                <a href="#" onclick="filterType('forks');">Forks</a>
+                                <a href="#" onclick="filterType('archieved');">Archieved</a>
+                                <a href="#" onclick="filterType('mirrors');">Mirrors</a>
+                            </div>
+                        </div>
+                    <!-- <button class="btn">Language: <b>All</b></button> -->
+                </div>
+                <div class="btn-cont" style="padding-left:1em;">
+                    <button class="btn-green">
+                            <svg fill="white" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9H3V8h1v1zm0-3H3v1h1V6zm0-2H3v1h1V4zm0-2H3v1h1V2zm8-1v12c0 .55-.45 1-1 1H6v2l-1.5-1.5L3 16v-2H1c-.55 0-1-.45-1-1V1c0-.55.45-1 1-1h10c.55 0 1 .45 1 1zm-1 10H1v2h2v-1h3v1h5v-2zm0-10H2v9h9V1z"></path></svg>
+                            New
+                    </button>
+                </div>
+            </div>
+            <div class="search-results"></div>
+        </section>
+    </main>
+    <script>
+        var repos = [];
+        var type = '';
+        var search = '';
+        fetch('https://api.github.com/users/supreetsingh247/repos?access_token=31ea4499af3645ffbde121a4eab4c80c28e641df')
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(myJson) {
+            repos = myJson;
+            renderElement();
+        });
+
+        function filterSearch(q)
+        {
+            search = q;
+            renderElement();
+        }
+
+        function filterType(e)
+        {
+            type = e;
+            renderElement();
+        }
+
+        function renderElement()
+        {
+            var html = '';
+            repos.forEach(function(element){
+                if(element.name.toLowerCase().indexOf(search) != -1)
+                {
+                    switch(type)
+                    {
+                        case '':
+                        default:
+                            break;
+
+                        case 'public':
+                        
+                            break;
+                        case 'private':
+                            break;
+                        case 'sources':
+                            break;
+                        case 'forks':
+                            if(element.forks == 0)
+                                return;
+                            break;
+                        case 'archieved':
+                            if(!element.archieved)
+                                return;
+                            break;
+                        case 'mirrors':
+                            break;
+                    }
+                    html += '<hr />';
+                    html += '<div class="list">';
+                    html += '<h4 style="color:steelblue" id="pname4">'+element.name+'</h4>';
+                    html += '<p class="sublist" id="desc4">'+(element.description ? element.description : "")+'</p>';
+                    html += '<p class="sublist" id="lang4">'+(element.language ? element.language : "")+'</p>';
+                    html += '</div>';
+                }
+            });
+
+            if(html == '')
+            {
+                html += '<hr />';
+                html += '<div class="list">';
+                html += '<h4 style="color:steelblue" id="pname4">No repos found</h4>';
+                html += '</div>';
+            }
+            
+            document.getElementsByClassName('search-results')[0].innerHTML = html;
+        }
+
+        function dropdownClicked() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Close the dropdown menu if the user clicks outside of it
+        window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+            }
+        }
+        }
+    </script>
+</body>
+</html>
